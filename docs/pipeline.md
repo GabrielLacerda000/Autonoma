@@ -9,7 +9,7 @@ O **Autonoma** é uma API de geração automática de conteúdo para redes socia
 - **Framework**: NestJS (TypeScript)
 - **Queue**: BullMQ (Redis via IORedis)
 - **Banco de Dados**: PostgreSQL com Drizzle ORM
-- **IA**: Google Gemini 1.5 Flash via Vercel AI SDK (`@ai-sdk/google`, `ai`)
+- **IA**: Google Gemini 2.0 Flash via Vercel AI SDK (`@ai-sdk/google`, `ai`)
 
 ---
 
@@ -277,4 +277,4 @@ flowchart TD
 | ------------- | ---------------------- | -------------------------------------- |
 | PostgreSQL    | Armazenamento de dados | `DATABASE_URL` env var                 |
 | Redis         | Backend do BullMQ      | `localhost:6379` (padrão)              |
-| Google AI API | Gemini 1.5 Flash       | `GOOGLE_GENERATIVE_AI_API_KEY` env var |
+| Google AI API | Gemini 2.0 Flash       | `GOOGLE_GENERATIVE_AI_API_KEY` env var |
