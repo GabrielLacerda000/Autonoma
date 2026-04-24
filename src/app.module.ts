@@ -3,9 +3,10 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { QueueModule } from './queue/queue.module';
 import { ContentPipelineModule } from './content-pipeline/content-pipeline.module';
+import { ProjectsModule } from './modules/projects/projects.module';
 
 @Module({
-  imports: [QueueModule, ContentPipelineModule],
+  imports: [QueueModule, ContentPipelineModule, ProjectsModule],
   controllers: [AppController],
   providers: [AppService],
 })
