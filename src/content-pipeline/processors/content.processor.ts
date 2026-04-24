@@ -12,12 +12,20 @@ export function startContentWorker() {
   const worker = new Worker(
     QUEUE_NAMES.CONTENT_PIPELINE,
     async (job) => {
-      console.log('🚀 Processing job:', job.name);
-      console.log('Payload:', job.data);
+      switch (job.name) {
+        case 'generate_trends':
+          console.log('📈 Generating trends...');
+          await new Promise((r) => setTimeout(r, 2000));
+          break;
 
-      if (job.name === 'generate_content_for_project') {
-        await new Promise((r) => setTimeout(r, 3000));
-        console.log('✅ Pipeline step finished');
+        case 'generate_calendar':
+          console.log('📅 Generating calendar...');
+          await new Promise((r) => setTimeout(r, 2000));
+          break;
+
+        case 'generate_content_for_project':
+          console.log('🌳 Pipeline root created');
+          break;
       }
     },
     { connection },
