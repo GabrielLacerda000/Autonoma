@@ -2,6 +2,7 @@ import { Worker, FlowProducer } from 'bullmq';
 import IORedis from 'ioredis';
 import { QUEUE_NAMES } from '../../queue/queue.constants.js';
 import { dispatch } from '../handlers/handler.registry.js';
+import { db } from '../../db/client.js';
 
 export function startContentWorker() {
   const connection = new IORedis({
@@ -11,7 +12,7 @@ export function startContentWorker() {
   });
 
   const flowProducer = new FlowProducer({ connection });
-  const deps = { flowProducer };
+  const deps = { flowProducer, db };
 
   const worker = new Worker(
     QUEUE_NAMES.CONTENT_PIPELINE,

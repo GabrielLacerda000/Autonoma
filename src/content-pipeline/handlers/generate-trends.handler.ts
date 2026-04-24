@@ -1,23 +1,50 @@
 import { Job } from 'bullmq';
+import { eq } from 'drizzle-orm';
 import { QUEUE_NAMES } from '../../queue/queue.constants.js';
 import { JobHandler, HandlerDeps } from './handler.interface.js';
+import { projects, trends } from '../../db/schema.js';
+import { TrendResearcherAgent } from '../../modules/ai/agents/trend-researcher.agent.js';
 
 const MAX_POSTS_PER_PIPELINE = 3;
 
 export class GenerateTrendsHandler implements JobHandler {
-  async execute(_job: Job, { flowProducer }: HandlerDeps): Promise<void> {
+  async execute(job: Job, { flowProducer, db }: HandlerDeps): Promise<void> {
     console.log('📈 Generating trends...');
 
-    // futuramente: resultado do TrendResearcherAgent
-    const trends = [
-      { id: 1, topic: 'Post sobre IA' },
-      { id: 2, topic: 'Post sobre produtividade' },
-      { id: 3, topic: 'Post sobre SaaS' },
-    ].slice(0, MAX_POSTS_PER_PIPELINE);
+    const { projectId } = job.data;
 
-    console.log(`🧠 Trends geradas: ${trends.length}`);
+    const [project] = await db
+      .select()
+      .from(projects)
+      .where(eq(projects.id, projectId));
 
-    for (const trend of trends) {
+    if (!project) {
+      throw new Error(`Project not found: ${projectId}`);
+    }
+
+    const agent = new TrendResearcherAgent();
+    const trendResults = await agent.execute({
+      niche: project.niche,
+      targetAudience: project.targetAudience ?? '',
+    });
+
+    const savedTrends = await db
+      .insert(trends)
+      .values(
+        trendResults.map((t) => ({
+          projectId,
+          title: t.title,
+          description: t.description,
+          keywords: t.keywords,
+          source: 'gemini',
+          score: t.score,
+        })),
+      )
+      .returning();
+
+    console.log(`🧠 Trends geradas: ${savedTrends.length}`);
+
+    for (const trend of savedTrends.slice(0, MAX_POSTS_PER_PIPELINE)) {
       await flowProducer.add({
         name: `post_pipeline_${trend.id}`,
         queueName: QUEUE_NAMES.CONTENT_PIPELINE,
@@ -25,17 +52,17 @@ export class GenerateTrendsHandler implements JobHandler {
         children: [
           {
             name: 'generate_draft_post',
-            data: trend,
+            data: { trendId: trend.id, title: trend.title },
             queueName: QUEUE_NAMES.CONTENT_PIPELINE,
             children: [
               {
                 name: 'edit_post',
-                data: trend,
+                data: { trendId: trend.id },
                 queueName: QUEUE_NAMES.CONTENT_PIPELINE,
                 children: [
                   {
                     name: 'optimize_post_seo',
-                    data: trend,
+                    data: { trendId: trend.id },
                     queueName: QUEUE_NAMES.CONTENT_PIPELINE,
                   },
                 ],
