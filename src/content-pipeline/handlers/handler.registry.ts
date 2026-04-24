@@ -12,8 +12,18 @@ const registry: Record<string, JobHandler> = {
   optimize_post_seo: new OptimizePostSeoHandler(),
 };
 
+const ORCHESTRATION_PREFIXES = ['post_pipeline_', 'generate_content_for_project'];
+
 export async function dispatch(job: Job, deps: HandlerDeps): Promise<void> {
   const handler = registry[job.name];
-  if (!handler) throw new Error(`No handler registered for job: ${job.name}`);
+
+  if (!handler) {
+    const isOrchestration = ORCHESTRATION_PREFIXES.some((prefix) =>
+      job.name.startsWith(prefix),
+    );
+    if (isOrchestration) return;
+    throw new Error(`No handler registered for job: ${job.name}`);
+  }
+
   await handler.execute(job, deps);
 }
