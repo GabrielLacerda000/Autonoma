@@ -49,11 +49,6 @@ export class QueueService implements OnModuleDestroy {
           data: { projectId },
           queueName: QUEUE_NAMES.CONTENT_PIPELINE,
         },
-        {
-          name: 'generate_calendar',
-          data: { projectId },
-          queueName: QUEUE_NAMES.CONTENT_PIPELINE,
-        },
       ],
     });
   }

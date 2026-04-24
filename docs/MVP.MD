@@ -6,15 +6,14 @@ Vou estruturar como se fosse o início de um SaaS real.
 
 # Visão do produto (MVP realista)
 
-Usuário entra → informa nicho/empresa → clica em “Gerar plano de conteúdo”.
+Usuário entra → informa nicho/empresa → clica em "Gerar plano de conteúdo".
 
 Pipeline roda assíncrono e entrega:
 
 1. Trends relevantes do nicho
-2. Calendário semanal/mensal
-3. Posts completos
-4. Versões revisadas
-5. Versão otimizada para SEO/social
+2. Posts completos
+3. Versões revisadas
+4. Versão otimizada para SEO/social
 
 Tudo salvo e versionado.
 
@@ -62,7 +61,6 @@ src/
 
     projects/
     posts/
-    calendar/
     trends/
 
     queue/
@@ -92,7 +90,7 @@ Entidades principais:
 
 ## projects
 
-Representa o “cliente/nicho”
+Representa o "cliente/nicho"
 
 ```
 projects
@@ -124,33 +122,6 @@ trends
 
 ---
 
-## content_calendars
-
-```
-content_calendars
-- id
-- project_id
-- period_start
-- period_end
-- created_at
-```
-
----
-
-## calendar_items
-
-```
-calendar_items
-- id
-- calendar_id
-- publish_date
-- topic
-- angle
-- platform (linkedin/twitter/blog)
-```
-
----
-
 ## posts (múltiplas versões!)
 
 Aqui fica interessante.
@@ -158,7 +129,7 @@ Aqui fica interessante.
 ```
 posts
 - id
-- calendar_item_id
+- trend_id
 - version
 - stage (draft | edited | seo)
 - content
@@ -210,40 +181,11 @@ Salvar → tabela trends.
 
 ---
 
-## 2️⃣ ContentStrategistAgent
+## 2️⃣ WriterAgent
 
 Entrada:
 
-* trends salvos
-* objetivo de posts/semana
-
-Saída:
-
-* calendário estruturado
-
-JSON obrigatório:
-
-```json
-[
-  {
-    "date": "",
-    "platform": "",
-    "topic": "",
-    "angle": ""
-  }
-]
-```
-
-Salvar → calendar_items.
-
----
-
-## 3️⃣ WriterAgent
-
-Entrada:
-
-* topic
-* angle
+* trend (topic + keywords)
 * tone_of_voice
 
 Saída:
@@ -254,7 +196,7 @@ Salvar → posts (stage=draft)
 
 ---
 
-## 4️⃣ EditorAgent
+## 3️⃣ EditorAgent
 
 Entrada:
 
@@ -268,7 +210,7 @@ Salvar → posts (stage=edited)
 
 ---
 
-## 5️⃣ SeoOptimizerAgent
+## 4️⃣ SeoOptimizerAgent
 
 Entrada:
 
@@ -298,11 +240,10 @@ Processor:
 Job: generate_content_for_project
 
 steps:
-1 → generate trends
-2 → generate calendar
-3 → generate drafts
-4 → edit posts
-5 → optimize seo
+1 → generate trends (faz fan-out de posts por trend)
+2 → generate drafts
+3 → edit posts
+4 → optimize seo
 ```
 
 Cada step é um job filho.
@@ -318,10 +259,9 @@ Pseudo-fluxo:
 ```ts
 async runPipeline(projectId) {
   const trends = await this.trendAgent.execute(...)
-  const calendar = await this.strategist.execute(trends)
 
-  for (item of calendar) {
-    const draft = await this.writer.execute(item)
+  for (trend of trends) {
+    const draft = await this.writer.execute(trend)
     const edited = await this.editor.execute(draft)
     const seo = await this.seo.execute(edited)
   }
@@ -339,7 +279,6 @@ Crie pasta:
 ```
 ai/prompts/
   trend.prompt.ts
-  strategist.prompt.ts
   writer.prompt.ts
   editor.prompt.ts
   seo.prompt.ts
