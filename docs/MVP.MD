@@ -21,6 +21,22 @@ Sem publisher por enquanto — mas já vamos deixar arquitetura preparada.
 
 ---
 
+# Fluxo do usuario
+
+Formulário:
+
+Nome da marca
+Nicho
+Público alvo
+Tom de voz
+
+## Exemplo
+
+Nome: Emitfy
+Nicho: SaaS financeiro para freelancers
+Público: freelancers iniciantes
+Tom: simples e educativo
+
 # Conceito central: Orquestração de pipeline
 
 Você NÃO vai chamar agentes direto via controller.
