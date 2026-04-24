@@ -11,7 +11,7 @@ export class GenerateTrendsHandler implements JobHandler {
   async execute(job: Job, { flowProducer, db }: HandlerDeps): Promise<void> {
     console.log('📈 Generating trends...');
 
-    const { projectId } = job.data;
+    const { projectId } = job.data as { projectId: string };
 
     const [project] = await db
       .select()
