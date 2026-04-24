@@ -1,7 +1,7 @@
 import { generateText } from 'ai';
-import { google } from '@ai-sdk/google';
 import { Agent } from './agent.interface.js';
 import { seoPrompt } from '../prompts/seo.prompt.js';
+import { AI_MODEL } from '../ai.constants.js';
 
 export type SeoOptimizerInput = {
   content: string;
@@ -19,7 +19,7 @@ export class SeoOptimizerAgent implements Agent<
 
   async execute(input: SeoOptimizerInput): Promise<SeoOptimizerOutput> {
     const result = await generateText({
-      model: google('gemini-1.5-flash'),
+      model: AI_MODEL,
       prompt: seoPrompt(input),
     });
 

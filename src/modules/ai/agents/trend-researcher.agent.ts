@@ -1,6 +1,6 @@
 import { generateText, Output } from 'ai';
-import { google } from '@ai-sdk/google';
 import { z } from 'zod';
+import { AI_MODEL } from '../ai.constants.js';
 import { Agent } from './agent.interface.js';
 import { trendPrompt } from '../prompts/trend.prompt.js';
 
@@ -23,7 +23,7 @@ export class TrendResearcherAgent implements Agent<TrendInput, TrendOutput> {
 
   async execute({ niche, targetAudience }: TrendInput): Promise<TrendOutput> {
     const result = await generateText({
-      model: google('gemini-1.5-flash'),
+      model: AI_MODEL,
       prompt: trendPrompt(niche, targetAudience),
       output: Output.array({ element: TrendItemSchema }),
     });

@@ -1,7 +1,7 @@
 import { generateText } from 'ai';
-import { google } from '@ai-sdk/google';
 import { Agent } from './agent.interface.js';
 import { writerPrompt } from '../prompts/writer.prompt.js';
+import { AI_MODEL } from '../ai.constants.js';
 
 export type WriterInput = {
   title: string;
@@ -17,7 +17,7 @@ export class WriterAgent implements Agent<WriterInput, WriterOutput> {
 
   async execute(input: WriterInput): Promise<WriterOutput> {
     const result = await generateText({
-      model: google('gemini-1.5-flash'),
+      model: AI_MODEL,
       prompt: writerPrompt(
         input.title,
         input.description,

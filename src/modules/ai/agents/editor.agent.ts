@@ -1,7 +1,7 @@
 import { generateText } from 'ai';
-import { google } from '@ai-sdk/google';
 import { Agent } from './agent.interface.js';
 import { editorPrompt } from '../prompts/editor.prompt.js';
+import { AI_MODEL } from '../ai.constants.js';
 
 export type EditorInput = {
   content: string;
@@ -17,7 +17,7 @@ export class EditorAgent implements Agent<EditorInput, EditorOutput> {
 
   async execute(input: EditorInput): Promise<EditorOutput> {
     const result = await generateText({
-      model: google('gemini-1.5-flash'),
+      model: AI_MODEL,
       prompt: editorPrompt(input),
     });
 
