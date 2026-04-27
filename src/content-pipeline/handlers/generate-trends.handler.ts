@@ -5,8 +5,7 @@ import { JobHandler, HandlerDeps } from './handler.interface.js';
 import { projects, trends } from '../../db/schema.js';
 import { TrendResearcherAgent } from '../../modules/ai/agents/trend-researcher.agent.js';
 
-const MAX_POSTS_PER_PIPELINE = 3;
-
+const MAX_POSTS_PER_PIPELINE = 1;
 export class GenerateTrendsHandler implements JobHandler {
   async execute(job: Job, { flowProducer, db }: HandlerDeps): Promise<void> {
     console.log('📈 Generating trends...');
@@ -51,8 +50,8 @@ export class GenerateTrendsHandler implements JobHandler {
         data: { trendId: trend.id },
         children: [
           {
-            name: 'generate_draft_post',
-            data: { trendId: trend.id, title: trend.title },
+            name: 'optimize_post_seo',
+            data: { trendId: trend.id },
             queueName: QUEUE_NAMES.CONTENT_PIPELINE,
             children: [
               {
@@ -61,8 +60,8 @@ export class GenerateTrendsHandler implements JobHandler {
                 queueName: QUEUE_NAMES.CONTENT_PIPELINE,
                 children: [
                   {
-                    name: 'optimize_post_seo',
-                    data: { trendId: trend.id },
+                    name: 'generate_draft_post',
+                    data: { trendId: trend.id, title: trend.title },
                     queueName: QUEUE_NAMES.CONTENT_PIPELINE,
                   },
                 ],
