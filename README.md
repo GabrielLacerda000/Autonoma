@@ -1,98 +1,256 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+<a id="readme-top"></a>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+[![Node][Node.js]][Node-url]
+[![NestJS][NestJS]][NestJS-url]
+[![TypeScript][TypeScript]][TypeScript-url]
+[![License: MIT][license-shield]][license-url]
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+<br />
+<div align="center">
+  <h3 align="center">Autonoma</h3>
 
-## Description
+  <p align="center">
+    AI-powered content pipeline that researches trends, drafts posts, edits them, and optimizes for SEO — fully automated.
+    <br />
+    <a href="https://github.com/GabrielLacerda000/autonoma"><strong>Explore the docs »</strong></a>
+    <br />
+    <br />
+    <a href="https://github.com/GabrielLacerda000/autonoma/issues/new?labels=bug">Report Bug</a>
+    &middot;
+    <a href="https://github.com/GabrielLacerda000/autonoma/issues/new?labels=enhancement">Request Feature</a>
+  </p>
+</div>
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Project setup
 
-```bash
-$ npm install
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li><a href="#about-the-project">About The Project</a></li>
+    <li><a href="#built-with">Built With</a></li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#architecture">Architecture</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#license">License</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ol>
+</details>
+
+
+
+## About The Project
+
+Autonoma is a backend service that automates social media content creation end-to-end. You define a project with a niche and target audience, trigger the pipeline, and the system handles the rest:
+
+1. **Trend Research** — an AI agent identifies the top trending topics for your niche
+2. **Draft Generation** — a writer agent produces a full post for each trend
+3. **Editing** — an editor agent refines the draft for clarity and tone
+4. **SEO Optimization** — a final agent adds keywords and hashtags for maximum reach
+
+Each stage is processed asynchronously via a BullMQ job queue, with all versions persisted to PostgreSQL so you have a full audit trail from draft to final post.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+## Built With
+
+* [![NestJS][NestJS]][NestJS-url]
+* [![TypeScript][TypeScript]][TypeScript-url]
+* [![PostgreSQL][PostgreSQL]][PostgreSQL-url]
+* [![Redis][Redis]][Redis-url]
+* [![Google Gemini][Gemini]][Gemini-url]
+
+**Also uses:** Drizzle ORM · BullMQ · Vercel AI SDK · Zod
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 20+
+- PostgreSQL running locally (or connection string to a remote instance)
+- Redis running on `localhost:6379`
+- A [Google Gemini API key](https://aistudio.google.com/app/apikey)
+
+### Installation
+
+1. Clone the repo
+   ```sh
+   git clone https://github.com/GabrielLacerda000/autonoma.git
+   cd autonoma
+   ```
+
+2. Install dependencies
+   ```sh
+   npm install
+   ```
+
+3. Create a `.env` file at the project root
+   ```env
+   DATABASE_URL=postgresql://postgres:admin@localhost:5432/autonoma
+   GOOGLE_GENERATIVE_AI_API_KEY=your-gemini-api-key
+   ```
+
+4. Set up the database
+   ```sh
+   npm run db:generate
+   npm run db:push
+   ```
+
+5. Start the development server
+   ```sh
+   npm run start:dev
+   ```
+
+The HTTP server starts on `http://localhost:3000` and the BullMQ worker starts automatically alongside it.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+## Usage
+
+### 1. Create a project
+
+```http
+POST /projects
+Content-Type: application/json
+
+{
+  "name": "Tech Blog",
+  "niche": "Artificial Intelligence",
+  "targetAudience": "software developers",
+  "toneOfVoice": "technical and concise"
+}
 ```
 
-## Compile and run the project
+### 2. Trigger the content pipeline
 
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+```http
+POST /pipeline/:projectId
 ```
 
-## Run tests
+This enqueues a BullMQ flow. The worker processes it asynchronously — trend research → draft → edit → SEO optimization.
 
-```bash
-# unit tests
-$ npm run test
+### 3. Retrieve results
 
-# e2e tests
-$ npm run test:e2e
+```http
+# All trends identified for the project
+GET /projects/:id/trends
 
-# test coverage
-$ npm run test:cov
+# Posts filtered by stage (draft | edited | seo)
+GET /projects/:id/posts?stage=seo
 ```
 
-## Deployment
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+## Architecture
+
+The system is split into four NestJS modules:
+
+| Module | Responsibility |
+|---|---|
+| **QueueModule** | Global BullMQ setup — `QueueService` exposes `startContentPipeline()` |
+| **ContentPipelineModule** | BullMQ worker + handler registry that dispatches jobs to the right handler |
+| **ProjectsModule** | REST API for project CRUD and reading trends/posts |
+| **AI Agents** | Four independent agents (TrendResearcher, Writer, Editor, SeoOptimizer) each wrapping a Gemini call |
+
+**Job flow inside BullMQ:**
+
+```
+generate_content_for_project       ← completion job (parent)
+  └── generate_trends              ← runs first; fans out per trend
+        └── post_pipeline_N
+              └── optimize_seo    ← 3rd
+                    └── edit      ← 2nd
+                          └── draft ← 1st
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+Posts are versioned in the database — every transformation stage (draft → edited → seo) is stored as a separate row, preserving the full history.
 
-## Resources
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-Check out a few resources that may come in handy when working with NestJS:
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
 
-## Support
+## Roadmap
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+- [x] BullMQ pipeline with hierarchical job flow
+- [x] TrendResearcherAgent (Gemini + structured output)
+- [x] WriterAgent, EditorAgent, SeoOptimizerAgent
+- [x] Drizzle ORM schema (projects, trends, posts)
+- [x] REST API for projects and posts
+- [ ] Authentication and multi-tenant support
+- [ ] WebSocket endpoint for real-time pipeline progress
+- [ ] Scheduled automatic pipeline runs
+- [ ] Dashboard UI
 
-## Stay in touch
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+
+
+## Contributing
+
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
 
 ## License
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+Distributed under the MIT License.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+## Contact
+
+Gabriel Lacerda — gabrielglacerda000@gmail.com
+
+Project: [https://github.com/GabrielLacerda000/autonoma](https://github.com/GabrielLacerda000/autonoma)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- MARKDOWN LINKS & IMAGES -->
+[license-shield]: https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge
+[license-url]: https://github.com/GabrielLacerda000/autonoma/blob/main/LICENSE
+
+[Node.js]: https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white
+[Node-url]: https://nodejs.org/
+
+[NestJS]: https://img.shields.io/badge/nestjs-%23E0234E.svg?style=for-the-badge&logo=nestjs&logoColor=white
+[NestJS-url]: https://nestjs.com/
+
+[TypeScript]: https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white
+[TypeScript-url]: https://www.typescriptlang.org/
+
+[PostgreSQL]: https://img.shields.io/badge/postgresql-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white
+[PostgreSQL-url]: https://www.postgresql.org/
+
+[Redis]: https://img.shields.io/badge/redis-%23DD0031.svg?style=for-the-badge&logo=redis&logoColor=white
+[Redis-url]: https://redis.io/
+
+[Gemini]: https://img.shields.io/badge/Google%20Gemini-8E75B2?style=for-the-badge&logo=googlegemini&logoColor=white
+[Gemini-url]: https://deepmind.google/technologies/gemini/
