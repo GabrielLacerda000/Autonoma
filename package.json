@@ -21,15 +21,22 @@
     "db:push": "drizzle-kit push",
     "db:generate": "drizzle-kit generate",
     "db:studio": "drizzle-kit studio",
-    "db:migrate": "drizzle-kit migrate"
+    "db:migrate": "drizzle-kit migrate",
+    "infra:start": "podman machine start",
+    "infra:up": "podman compose -f infra/podman-compose.yml up -d",
+    "infra:down": "podman compose -f infra/podman-compose.yml down",
+    "infra:logs": "podman compose -f infra/podman-compose.yml logs -f"
   },
   "dependencies": {
     "@ai-sdk/google": "^3.0.64",
     "@nestjs/common": "^11.0.1",
     "@nestjs/core": "^11.0.1",
     "@nestjs/platform-express": "^11.0.1",
+    "@nestjs/swagger": "^11.4.2",
     "ai": "^6.0.168",
     "bullmq": "^5.76.1",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.15.1",
     "dotenv": "^17.4.2",
     "drizzle-orm": "^0.45.2",
     "ioredis": "^5.10.1",
